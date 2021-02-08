@@ -40,58 +40,51 @@ export const USERS_CLEAN_UP = createAction('USERS_CLEAN_UP');
 
 export const USERS_CLEAR_DATA_LOGOUT = createAction('USERS_CLEAR_DATA_LOGOUT');
 
-export const fetchUsers = (userId = '') => {
-  console.log('Entramos a fetch users-->');
-  return async (dispatch, getState) => {
-    dispatch(checkUserData());
-    
-    dispatch(USERS_FETCH_DATA_INIT());
-    
-    if (userId) {
-      let user;
-      try {
-        user = await fetchDocument('users', userId);
-      } catch (error) {
-        toastr.error('', error);
-        return dispatch(USERS_FETCH_DATA_FAIL({ error }));
-      }
-      
-      if (!user) {
-        const errorMessage = 'User not available';
-        toastr.error('', errorMessage);
-        return dispatch(USERS_FETCH_DATA_FAIL({ error: errorMessage }));
-      }
-      
-      const users = getState().users.data;
-      users.push(user);
-      
-      return dispatch(
-        USERS_FETCH_DATA_SUCCESS({
-          data: users,
-        })
-        );
-      }
-      
-      console.log('Siguiente');
-      const { id } = getState().auth.userData;
-      console.log('id', id);
-      
-      let users;
-      
-      try {
-        users = await fetchCollection('users');
-        console.log('users', users);
+export const fetchUsers = (userId = '') => async (dispatch, getState) => {
+  dispatch(checkUserData());
+  
+  dispatch(USERS_FETCH_DATA_INIT());
+  
+  if (userId) {
+    let user;
+    try {
+      user = await fetchDocument('users', userId);
     } catch (error) {
       toastr.error('', error);
       return dispatch(USERS_FETCH_DATA_FAIL({ error }));
     }
-
+    
+    if (!user) {
+      const errorMessage = 'User not available';
+      toastr.error('', errorMessage);
+      return dispatch(USERS_FETCH_DATA_FAIL({ error: errorMessage }));
+    }
+    
+    const users = getState().users.data;
+    users.push(user);
+    
     return dispatch(
       USERS_FETCH_DATA_SUCCESS({
-        data: users.filter((user) => user.id !== id),
+        data: users,
       })
-    );
-  };
+      );
+    }
+    
+    const { id } = getState().auth.userData;    
+    let users;
+    
+    try {
+      users = await fetchCollection('users');
+  } catch (error) {
+    toastr.error('', error);
+    return dispatch(USERS_FETCH_DATA_FAIL({ error }));
+  }
+
+  return dispatch(
+    USERS_FETCH_DATA_SUCCESS({
+      data: users.filter((user) => user.id !== id),
+    })
+  );
 };
 
 const deleteLogo = (oldLogo) => {
@@ -106,8 +99,7 @@ const deleteLogo = (oldLogo) => {
   return logoRef.delete();
 };
 
-export const deleteUser = (id) => {
-  return async (dispatch, getState) => {
+export const deleteUser = (id) => async (dispatch, getState) => {
     dispatch(USERS_DELETE_USER_INIT());
     const { locale } = getState().preferences;
     const { logoUrl } = getState()
@@ -133,13 +125,10 @@ export const deleteUser = (id) => {
     toastr.success('', 'The user was deleted.');
     return dispatch(USERS_DELETE_USER_SUCCESS({ id }));
   };
-};
 
-export const clearUsersDataLogout = () => {
-  return (dispatch) => {
+export const clearUsersDataLogout = () => (dispatch) => {
     dispatch(USERS_CLEAR_DATA_LOGOUT());
   };
-};
 
 const uploadLogo = (uid, file) => {
   const storageRef = firebase.storage().ref();
@@ -156,9 +145,7 @@ const getLogoUrl = (uid, file) => {
   const fileExtension = file.name.split('.').pop();
   const fileName = `${uid}.${fileExtension}`;
   return storageRef.child(`users/${fileName}`).getDownloadURL()
-    .then((url) => {
-      return url; 
-    });
+    .then((url) => url);
 };
 
 export const createUser = ({
@@ -168,8 +155,7 @@ export const createUser = ({
   file,
   createdAt,
   isAdmin,
-}) => {
-  return async (dispatch, getState) => {
+}) => async (dispatch, getState) => {
     dispatch(USERS_CREATE_USER_INIT());
     const { locale } = getState().preferences;
 
@@ -230,7 +216,6 @@ export const createUser = ({
     toastr.success('', 'User created successfully');
     return dispatch(USERS_CREATE_USER_SUCCESS({ user: response.data }));
   };
-};
 
 const replaceLogo = async (id, file) => {
   const storageRef = firebase.storage().ref();
@@ -263,8 +248,7 @@ export const modifyUser = ({
   id,
   isEditing,
   isProfile,
-}) => {
-  return async (dispatch, getState) => {
+}) => async (dispatch, getState) => {
     dispatch(USERS_MODIFY_USER_INIT());
     const user = isProfile
       ? getState().auth.userData
@@ -298,6 +282,5 @@ export const modifyUser = ({
 
     return dispatch(USERS_MODIFY_USER_SUCCESS({ user: userData, id }));
   };
-};
 
 export const usersCleanUp = () => (dispatch) => dispatch(USERS_CLEAN_UP());

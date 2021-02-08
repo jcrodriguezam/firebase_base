@@ -47,21 +47,24 @@ const questions = [
   },
 ];
 
+// eslint-disable-next-line no-console
+const logger = (data) => console.log(data);
+
 const replaceDatabase = (oldDatabase, newDatabase) => {
   fs.readFile(configPath, 'utf8', (error, data) => {
     if (error) {
-      return console.log(error);
+      return logger(error);
     }
     const result = data.replace(oldDatabase, newDatabase);
 
     fs.writeFile(configPath, result, 'utf8', (err) => {
-      if (err) return console.log(err);
+      if (err) return logger(err);
     });
   });
 
   fs.readFile(importPath, 'utf8', (error, data) => {
     if (error) {
-      return console.log(error);
+      return logger(error);
     }
 
     let oldInit;
@@ -85,7 +88,7 @@ const replaceDatabase = (oldDatabase, newDatabase) => {
     data = data.replace(oldImport, newImport);
 
     fs.writeFile(importPath, data, 'utf8', (err) => {
-      if (err) return console.log(err);
+      if (err) return logger(err);
     });
   });
 };
@@ -96,13 +99,13 @@ const deleteDatabase = async (database) => {
   try {
     fs.rmdirSync(`./src/${dir}`, { recursive: true });
   } catch (error) {
-    console.error(`Error while deleting ${database}. ${error}`);
+    logger(`Error while deleting ${database}. ${error}`);
   }
 
   try {
     fs.rmdirSync(`./test/${dir}`, { recursive: true });
   } catch (error) {
-    console.error(`Error while deleting ${database} tests. ${error}`);
+    logger(`Error while deleting ${database} tests. ${error}`);
   }
 };
 
@@ -116,7 +119,7 @@ inquirer
       databaseURL,
     });
 
-    console.log('Setting admin account in authentication 🔨');
+    logger('Setting admin account in authentication 🔨');
 
     const { uid } = await admin.auth().createUser({
       email,
@@ -128,9 +131,9 @@ inquirer
       isAdmin: true,
     });
 
-    console.log('Created admin account in authentication');
+    logger('Created admin account in authentication');
 
-    console.log('Creating admin account in database');
+    logger('Creating admin account in database');
 
     const user = {
       isAdmin: true,
@@ -152,10 +155,10 @@ inquirer
       deleteDatabase(database);
     }
 
-    console.log(`Created admin account in ${database}`);
+    logger(`Created admin account in ${database}`);
     process.exit(0);
   })
   .catch((error) => {
-    console.log(error.message);
+    logger(error.message);
     process.exit(0);
   });

@@ -76,23 +76,21 @@ const Table = ({ columns, data }) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      className={classNames(
-                        { 'is-actions-cell': cell.column.id === 'actions' },
-                        {
-                          'has-no-head-mobile is-image-cell':
-                            cell.column.id === 'logoUrl',
-                        }
-                      )}
-                      data-label={cell.column.Header}
-                      {...cell.getCellProps()}
-                    >
-                      {cell.render('Cell')}
-                    </td>
-                  );
-                })}
+                {row.cells.map((cell) => (
+                  <td
+                    className={classNames(
+                      { 'is-actions-cell': cell.column.id === 'actions' },
+                      {
+                        'has-no-head-mobile is-image-cell':
+                          cell.column.id === 'logoUrl',
+                      }
+                    )}
+                    data-label={cell.column.Header}
+                    {...cell.getCellProps()}
+                  >
+                    {cell.render('Cell')}
+                  </td>
+                ))}
               </tr>
             );
           })}

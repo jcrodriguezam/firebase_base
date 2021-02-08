@@ -33,14 +33,8 @@ export const fetchCollection = async (collection, options = {}) => {
   return data;
 };
 
-export const deleteDocument = (collection, id) => {
-  return getFirestoreRef(collection).doc(id).delete();
-};
+export const deleteDocument = (collection, id) => getFirestoreRef(collection).doc(id).delete();
 
-export const createDocument = (collection, id, values) => {
-  return getFirestoreRef(collection).doc(id).set(values);
-};
+export const createDocument = (collection, id, values) => getFirestoreRef(collection).doc(id).set(values);
 
-export const updateDocument = (collection, id, values) => {
-  return getFirestoreRef(collection).doc(id).update(values);
-};
+export const updateDocument = (collection, id, values) => getFirestoreRef(collection).doc(id).update(values);

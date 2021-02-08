@@ -69,34 +69,29 @@ export const AUTH_PROVIDER_SUCCESS = createAction('AUTH_PROVIDER_SUCCESS');
 
 export const AUTH_PROVIDER_FAIL = createAction('AUTH_PROVIDER_FAIL');
 
-export const logout = () => {
-  return async (dispatch) => {
-    dispatch(AUTH_LOGOUT_INIT());
+export const logout = () => async (dispatch) => {
+  dispatch(AUTH_LOGOUT_INIT());
 
-    dispatch(clearUsersDataLogout());
-    await firebase.auth().signOut();
+  dispatch(clearUsersDataLogout());
+  await firebase.auth().signOut();
 
-    dispatch(AUTH_LOGOUT_SUCCESS());
-  };
+  dispatch(AUTH_LOGOUT_SUCCESS());
 };
 
-export const verifyAuth = () => {
-  return (dispatch) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      dispatch(AUTH_RESTORE_SESSION_INIT());
+export const verifyAuth = () => (dispatch) => {
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch(AUTH_RESTORE_SESSION_INIT());
 
-      if (user !== null) {
-        return dispatch(AUTH_RESTORE_SESSION_SUCCESS());
-      }
+    if (user !== null) {
+      return dispatch(AUTH_RESTORE_SESSION_SUCCESS());
+    }
 
-      dispatch(AUTH_RESTORE_SESSION_FAIL());
-      return dispatch(logout());
-    });
-  };
+    dispatch(AUTH_RESTORE_SESSION_FAIL());
+    return dispatch(logout());
+  });
 };
 
-export const fetchUserData = () => {
-  return async (dispatch) => {
+export const fetchUserData = () => async (dispatch) => {
     dispatch(AUTH_FETCH_USER_DATA_INIT());
 
     const { uid } = firebase.auth().currentUser;
@@ -105,7 +100,6 @@ export const fetchUserData = () => {
 
     try {
       user = await fetchDocument('users', uid);
-      console.log('fetchUserData: user', user);
     } catch (error) {
       dispatch(logout());
       return dispatch(AUTH_FETCH_USER_DATA_FAIL({ error }));
@@ -122,20 +116,16 @@ export const fetchUserData = () => {
       })
     );
   };
-};
 
-export const checkUserData = () => {
-  return (dispatch, getState) => {
+export const checkUserData = () => (dispatch, getState) => {
     const { id } = getState().auth.userData;
 
     if (!id) {
       dispatch(fetchUserData());
-    }
+    }    
   };
-};
 
-export const auth = (email, password) => {
-  return async (dispatch, getState) => {
+export const auth = (email, password) => async (dispatch, getState) => {
     dispatch(AUTH_SIGN_IN_INIT());
     const { locale } = getState().preferences;
     try {
@@ -157,10 +147,8 @@ export const auth = (email, password) => {
 
     return dispatch(fetchUserData());
   };
-};
 
-export const setPassword = (email, password, url) => {
-  return async (dispatch, getState) => {
+export const setPassword = (email, password, url) => async (dispatch, getState) => {
     dispatch(AUTH_SET_PASSWORD_INIT());
     const { locale } = getState().preferences;
 
@@ -184,10 +172,8 @@ export const setPassword = (email, password, url) => {
 
     return dispatch(fetchUserData());
   };
-};
 
-export const resetPassword = (email) => {
-  return async (dispatch, getState) => {
+export const resetPassword = (email) => async (dispatch, getState) => {
     dispatch(AUTH_RESET_PASSWORD_INIT());
     const { locale } = getState().preferences;
 
@@ -200,12 +186,10 @@ export const resetPassword = (email) => {
 
     return dispatch(AUTH_RESET_PASSWORD_SUCCESS());
   };
-};
 
 export const authCleanUp = () => (dispatch) => dispatch(AUTH_CLEAN_UP());
 
-export const changeUserPassword = (currentPassword, newPassword) => {
-  return async (dispatch, getState) => {
+export const changeUserPassword = (currentPassword, newPassword) => async (dispatch, getState) => {
     dispatch(AUTH_CHANGE_PASSWORD_INIT());
     const { locale } = getState().preferences;
 
@@ -237,19 +221,14 @@ export const changeUserPassword = (currentPassword, newPassword) => {
     toastr.success('', 'Password changed successfully');
     return dispatch(AUTH_CHANGE_PASSWORD_SUCCESS());
   };
-};
 
-export const authWithSocialMedia = (authResult) => {
-  return async (dispatch, getState) => {
+export const authWithSocialMedia = (authResult) => async (dispatch, getState) => {
     dispatch(AUTH_PROVIDER_INIT());
     const { locale } = getState().preferences;
     const { user, additionalUserInfo } = authResult;
     const { isNewUser, profile } = additionalUserInfo;
     const { uid, photoURL, email, displayName } = user;
     const { location, family_name, given_name } = profile;
-    console.log('authWithSocialMedia: profile', profile);
-    console.log('authWithSocialMedia: user', user);
-    console.log('authWithSocialMedia: additionalUserInfo', additionalUserInfo);
     const userData = {
       isAdmin: false,
       email,
@@ -281,4 +260,3 @@ export const authWithSocialMedia = (authResult) => {
       AUTH_PROVIDER_SUCCESS({ id: uid, ...userData, ...userFromDb })
     );
   };
-};

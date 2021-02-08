@@ -53,8 +53,7 @@ export const flags = {
   es,
 };
 
-export const uiConfig = (onSignInSuccessHandler, onSignInFailHandler) => {
-  return {
+export const uiConfig = (onSignInSuccessHandler, onSignInFailHandler) => ({
     callbacks: {
       signInSuccessWithAuthResult: onSignInSuccessHandler,
       signInFailure: onSignInFailHandler,
@@ -77,5 +76,4 @@ export const uiConfig = (onSignInSuccessHandler, onSignInFailHandler) => {
       },
       { provider: 'microsoft.com', fullLabel: 'Continue with Microsoft' },
     ],
-  };
-};
+  });

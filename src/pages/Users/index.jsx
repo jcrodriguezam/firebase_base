@@ -35,7 +35,6 @@ const Users = () => {
 
   useEffect(() => {
     if (isAdmin) {
-      console.log('Es Admin vamos a fetch data!!');
       dispatch(fetchUsers());
     }
 
