@@ -3,8 +3,8 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { availableLocales, flags } from 'utils';
-import { setUserLocale } from 'state/actions/preferences';
+// import { availableLocales, flags } from 'utils';
+// import { setUserLocale } from 'state/actions/preferences';
 import { useFormatMessage } from 'hooks';
 import { logout } from 'state/actions/auth';
 import paths from 'pages/Router/paths';
@@ -14,14 +14,21 @@ import Link from '../Link';
 const NavBar = ({ handleMobileToggle, asideMobileActive }) => {
   const [navMobileActive, setNavMobileActive] = useState(false);
 
-  const { userName, logoUrl, locale } = useSelector(
+  const { userName, logoUrl } = useSelector(
     (state) => ({
       userName: state.auth.userData.name,
       logoUrl: state.auth.userData.logoUrl,
-      locale: state.preferences.locale,
     }),
     shallowEqual
   );
+  // const { userName, logoUrl, locale } = useSelector(
+  //   (state) => ({
+  //     userName: state.auth.userData.name,
+  //     logoUrl: state.auth.userData.logoUrl,
+  //     locale: state.preferences.locale,
+  //   }),
+  //   shallowEqual
+  // );
 
   const dispatch = useDispatch();
 
@@ -33,11 +40,11 @@ const NavBar = ({ handleMobileToggle, asideMobileActive }) => {
     setNavMobileActive(!navMobileActive);
   }, [setNavMobileActive, navMobileActive]);
 
-  const changeLocaleHandler = (local) => {
-    dispatch(setUserLocale(local));
-  };
+  // const changeLocaleHandler = (local) => {
+  //   dispatch(setUserLocale(local));
+  // };
 
-  const locales = availableLocales.filter((local) => local !== locale);
+  // const locales = availableLocales.filter((local) => local !== locale);
 
   return (
     <nav id="navbar-main" className="navbar is-fixed-top">
@@ -82,7 +89,7 @@ const NavBar = ({ handleMobileToggle, asideMobileActive }) => {
         id="navbar-menu"
       >
         <div className="navbar-end">
-          <div className="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
+          {/* <div className="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
             <a className="navbar-link is-arrowless">
               <div className="is-user-avatar">
                 <span>
@@ -109,7 +116,7 @@ const NavBar = ({ handleMobileToggle, asideMobileActive }) => {
                 </a>
               ))}
             </div>
-          </div>
+          </div> */}
           <div className="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
             <a className="navbar-link is-arrowless">
               <div className="is-user-avatar">

@@ -1,14 +1,10 @@
 import React from 'react';
-
 import { useFormatMessage } from 'hooks';
+import PageTitle from '../../../components/PageTitle/index';
 
 const Submenu = () => (
   <>
-    <section className="hero is-hero-bar">
-      <div className="hero-body">
-        <h1 className="title">{useFormatMessage('Submenu.submenu')}</h1>
-      </div>
-    </section>
+    <PageTitle title={useFormatMessage('Page.Title.Documents')} preTitle={useFormatMessage('Page.Data')}/>
     <section className="section is-main-section">
       {useFormatMessage('Submenu.content')}
     </section>

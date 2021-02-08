@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createAction } from 'redux-act';
 import { toastr } from 'react-redux-toastr';
 
@@ -104,6 +105,7 @@ export const fetchUserData = () => {
 
     try {
       user = await fetchDocument('users', uid);
+      console.log('fetchUserData: user', user);
     } catch (error) {
       dispatch(logout());
       return dispatch(AUTH_FETCH_USER_DATA_FAIL({ error }));
@@ -244,13 +246,15 @@ export const authWithSocialMedia = (authResult) => {
     const { user, additionalUserInfo } = authResult;
     const { isNewUser, profile } = additionalUserInfo;
     const { uid, photoURL, email, displayName } = user;
-
-    const { location } = profile;
-
+    const { location, family_name, given_name } = profile;
+    console.log('authWithSocialMedia: profile', profile);
+    console.log('authWithSocialMedia: user', user);
+    console.log('authWithSocialMedia: additionalUserInfo', additionalUserInfo);
     const userData = {
       isAdmin: false,
       email,
-      name: displayName,
+      name: given_name || displayName,
+      surname1: family_name,
       createdAt: new Date().toString(),
       logoUrl: photoURL,
       location: location?.name || null,

@@ -9,7 +9,10 @@ import ResetPassword from 'pages/ResetPassword';
 import NotFound from 'pages/NotFound';
 import User from 'pages/User';
 import Section from 'pages/Section';
-import Submenu from 'pages/Submenu';
+import Images from 'pages/Data/Images';
+import Videos from 'pages/Data/Videos';
+import Documents from 'pages/Data/Documents';
+import Audio from 'pages/Data/Audio';
 import paths from './paths';
 import PrivateRoute from './PrivateRoute';
 
@@ -24,8 +27,10 @@ const RouterComponent = () => {
         <PrivateRoute path={paths.USERS} component={Users} />
         <PrivateRoute path={paths.PROFILE} component={Profile} />
         <PrivateRoute path={paths.SECTION} component={Section} />
-        <PrivateRoute path={paths.SUBMENU_1} component={Submenu} />
-        <PrivateRoute path={paths.SUBMENU_2} component={Submenu} />
+        <PrivateRoute path={paths.IMAGES} component={Images} />
+        <PrivateRoute path={paths.VIDEOS} component={Videos} />
+        <PrivateRoute path={paths.DOCUMENTS} component={Documents} />
+        <PrivateRoute path={paths.AUDIO} component={Audio} />
         <PrivateRoute path={paths.ROOT} component={Home} />
         <Route component={NotFound} />
       </Switch>

@@ -26,4 +26,8 @@ const useFormatDate = (value, options = {}) => {
   return intl.formatDate(value, options);
 };
 
-export { useChangeHandler, useFormatMessage, useFormatDate };
+const useFormatBool = (value, options = {}) => {
+  return value ? options.true : options.false;
+};
+
+export { useChangeHandler, useFormatMessage, useFormatDate, useFormatBool };

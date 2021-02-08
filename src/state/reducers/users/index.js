@@ -86,10 +86,11 @@ export const usersReducer = createReducer(
             if (elem.id === payload.id) {
               return {
                 name: payload.user.name,
-                location: payload.user.location,
+                surname1: payload.user.surname1,
+                surname2: payload.user.surname2,
+                phone: payload.user.phone,
                 id: payload.id,
                 logoUrl: payload.user.logoUrl,
-                createdAt: payload.user.createdAt,
                 email: elem.email,
               };
             }

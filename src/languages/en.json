@@ -58,6 +58,10 @@
   "Aside.dropdownMenu": "Dropdown Menu",
   "Aside.submenu1": "Submenu 1",
   "Aside.submenu2": "Submenu 2",
+  "Aside.data": "Data",
+  "Aside.images": "Images",
+  "Aside.videos": "Videos",
+  "Aside.documents": "Documents",
   "NavBar.profile": "Profile",
   "NavBar.logOut": "Log Out",
   "NavBar.Language": "English",
@@ -91,5 +95,6 @@
   "auth/cancelled-popup-request": "Too many pop ups, just one pop up is allowed",
   "utils.default": "Unknown error, get in touch with your administrator",
   "ErrorMessage.defaultMessage": "This field is required",
-  "invalidEmail": "Invalid E-mail"
+  "invalidEmail": "Invalid E-mail",
+  "Page.Title.Configuration": "SETTINGS"
 }

@@ -7,6 +7,8 @@ export default {
   PROFILE: '/profile',
   RESET_PASSWORD: '/recover-password',
   SECTION: '/section',
-  SUBMENU_1: '/submenu1',
-  SUBMENU_2: '/submenu2'
+  IMAGES: '/images',
+  VIDEOS: '/videos',
+  DOCUMENTS: '/documents',
+  AUDIO: '/audio'
 };

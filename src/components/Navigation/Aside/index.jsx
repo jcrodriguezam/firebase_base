@@ -3,6 +3,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import logo from 'assets/logo/sinapsis_gray.svg';
 
 import { useFormatMessage } from 'hooks';
 import paths from 'pages/Router/paths';
@@ -56,12 +57,17 @@ const Aside = ({ handleMobileToggle }) => {
   const usersMessage = useFormatMessage('Aside.users');
 
   return (
-    <aside className="aside is-placed-left is-expanded">
+    <aside className={`aside ${classes.aside} is-placed-left is-expanded`}>
       <Link to={paths.ROOT} className="aside-tools">
         <div className="aside-tools-label">
-          <span>
-            <b>React</b> Firebase
-          </span>
+          <div className="logo">
+            <a href="#">
+              <img
+                src={logo}
+                alt="CreateThrive.com"
+              />
+            </a>
+          </div>
         </div>
       </Link>
       <div className="menu is-menu-main">
@@ -73,7 +79,7 @@ const Aside = ({ handleMobileToggle }) => {
               onClick={handleMobileToggle}
             >
               <span className="icon">
-                <i className="mdi mdi-home" />
+                <i className="mdi mdi-home"/>
               </span>
               <span className="menu-item-label">
                 {useFormatMessage('Aside.home')}
@@ -94,23 +100,41 @@ const Aside = ({ handleMobileToggle }) => {
               </NavLink>
             </li>
           )}
-          <SubMenu label={useFormatMessage('Aside.dropdownMenu')}>
+          <SubMenu label={useFormatMessage('Aside.data')}>
             <li>
               <NavLink
                 className={classes.submenuLink}
-                to={paths.SUBMENU_1}
+                to={paths.IMAGES}
                 onClick={handleMobileToggle}
               >
-                <span>{useFormatMessage('Aside.submenu1')}</span>
+                <span>{useFormatMessage('Aside.images')}</span>
               </NavLink>
             </li>
             <li>
               <NavLink
                 className={classes.submenuLink}
-                to={paths.SUBMENU_2}
+                to={paths.VIDEOS}
                 onClick={handleMobileToggle}
               >
-                <span>{useFormatMessage('Aside.submenu2')}</span>
+                <span>{useFormatMessage('Aside.videos')}</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={classes.submenuLink}
+                to={paths.AUDIO}
+                onClick={handleMobileToggle}
+              >
+                <span>{useFormatMessage('Aside.audio')}</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={classes.submenuLink}
+                to={paths.DOCUMENTS}
+                onClick={handleMobileToggle}
+              >
+                <span>{useFormatMessage('Aside.documents')}</span>
               </NavLink>
             </li>
           </SubMenu>

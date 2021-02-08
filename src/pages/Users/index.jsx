@@ -3,6 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import classNames from 'classnames';
 import ClipLoader from 'react-spinners/ClipLoader';
+import PageTitle from 'components/PageTitle';
 
 import { useFormatMessage, useFormatDate } from 'hooks';
 import Table from 'components/Table';
@@ -34,6 +35,7 @@ const Users = () => {
 
   useEffect(() => {
     if (isAdmin) {
+      console.log('Es Admin vamos a fetch data!!');
       dispatch(fetchUsers());
     }
 
@@ -193,9 +195,7 @@ const Users = () => {
         <div className="hero-body">
           <div className="level">
             <div className="level-left">
-              <div className="level-item">
-                <h1 className="title">{useFormatMessage('Users.users')}</h1>
-              </div>
+              <PageTitle title={useFormatMessage('Users.users')} preTitle={useFormatMessage('Page.Title.administration')}/>
             </div>
             <div className="level-right">
               <div className="level-item">

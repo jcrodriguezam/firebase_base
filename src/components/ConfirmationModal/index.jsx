@@ -22,6 +22,7 @@ const ConfirmationModal = ({
         className="modal-background"
         onClick={!isLoading ? onCancel : undefined}
       />
+      XXXX
       <div className="modal-card">
         <header className="modal-card-head">
           <p className="modal-card-title">{title}</p>

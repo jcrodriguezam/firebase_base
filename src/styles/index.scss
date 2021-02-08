@@ -1,0 +1,100 @@
+@charset "utf-8";
+@import "../../node_modules/bulma/bulma.sass";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+body * {
+  font-family: 'Montserrat', sans-serif;
+  // color: #6c768e;
+}
+@import "main.scss";
+@import "base.scss";
+@import "footer.scss";
+@import "aside.scss";
+
+
+nav.navbar {
+  box-shadow: 0 0.125rem 0.625rem rgba(90,97,105,.12);
+}
+
+.navbar-menu {
+  background-color: #FFFFFF;
+  border-bottom: none;
+}
+section.hero.is-hero-bar {
+  background-color: #F2F2F2;
+  border-bottom: none;
+  .preTitle {
+    text-transform: uppercase;
+    font-size: .7em;
+    color: #6c768e;
+  }
+  .title {
+    color: #6c768e;
+  }
+}
+
+
+.card {
+  border: 1px solid #1f70a517;
+  box-shadow: 0 0.125rem 0.625rem rgba(90,97,105,.12);
+  .card-header-title,
+  .label {
+    color: #6c768e;
+    font-weight: 500;
+  }
+
+  .label {
+    color: #6c768ecc;
+    font-weight: 600;
+    text-align: left;
+    font-size: .9em;
+  }
+}
+
+.label {
+  &.is-inputLabel {
+    text-transform: uppercase;
+    font-size: .7em;
+    transform: translateY(4px);
+  }
+}
+
+.input {
+  border: none;
+  margin-right: 1em;
+  border-bottom: 1px solid  #6c768e38;
+  padding: 0;
+  border-radius: 0;
+
+  &.is-mutted {
+    border: none!important
+  }
+}
+
+.input { 
+  font-family: 'Montserrat', sans-serif;
+  &.is-bold { 
+  font-weight: 500
+  }
+ &.is-mutted { color: #6c768e}
+}
+
+p.is-mutted { color: #6c768e}
+
+
+
+.button.is-primary span {color: #fff;}
+
+.file.has-name .file-name {
+  max-width: 155px;
+}
+
+/*
+
+
+
+
+nav.navbar {
+  box-shadow: none;
+}
+*/

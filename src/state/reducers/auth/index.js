@@ -62,7 +62,9 @@ export const authReducer = createReducer(
         isAdmin: payload.isAdmin,
         email: payload.email,
         name: payload.name,
-        location: payload.location,
+        surname1: payload.surname1,
+        surname2: payload.surname2,
+        phone: payload.phone,
         logoUrl: payload.logoUrl,
         createdAt: payload.createdAt
       },
@@ -139,8 +141,10 @@ export const authReducer = createReducer(
         email: state.userData.email,
         isAdmin: payload.isAdmin,
         name: payload.name,
-        location: payload.location,
-        logoUrl: payload.logoUrl || state.userData.logoUrl,
+        surname1: payload.surname1,
+        surname2: payload.surname2,
+        phone: payload.phone,
+        logoUrl: payload.logoUrl,
         createdAt: payload.createdAt
       }
     }),
@@ -155,7 +159,9 @@ export const authReducer = createReducer(
         isAdmin: payload.isAdmin,
         email: payload.email,
         name: payload.name,
-        location: payload.location,
+        surname1: payload.surname1,
+        surname2: payload.surname2,
+        phone: payload.phone,
         logoUrl: payload.logoUrl,
         createdAt: payload.createdAt
       },

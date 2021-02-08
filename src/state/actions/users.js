@@ -41,11 +41,12 @@ export const USERS_CLEAN_UP = createAction('USERS_CLEAN_UP');
 export const USERS_CLEAR_DATA_LOGOUT = createAction('USERS_CLEAR_DATA_LOGOUT');
 
 export const fetchUsers = (userId = '') => {
+  console.log('Entramos a fetch users-->');
   return async (dispatch, getState) => {
     dispatch(checkUserData());
-
+    
     dispatch(USERS_FETCH_DATA_INIT());
-
+    
     if (userId) {
       let user;
       try {
@@ -54,29 +55,32 @@ export const fetchUsers = (userId = '') => {
         toastr.error('', error);
         return dispatch(USERS_FETCH_DATA_FAIL({ error }));
       }
-
+      
       if (!user) {
         const errorMessage = 'User not available';
         toastr.error('', errorMessage);
         return dispatch(USERS_FETCH_DATA_FAIL({ error: errorMessage }));
       }
-
+      
       const users = getState().users.data;
       users.push(user);
-
+      
       return dispatch(
         USERS_FETCH_DATA_SUCCESS({
           data: users,
         })
-      );
-    }
-
-    const { id } = getState().auth.userData;
-
-    let users;
-
-    try {
-      users = await fetchCollection('users');
+        );
+      }
+      
+      console.log('Siguiente');
+      const { id } = getState().auth.userData;
+      console.log('id', id);
+      
+      let users;
+      
+      try {
+        users = await fetchCollection('users');
+        console.log('users', users);
     } catch (error) {
       toastr.error('', error);
       return dispatch(USERS_FETCH_DATA_FAIL({ error }));
@@ -94,8 +98,12 @@ const deleteLogo = (oldLogo) => {
   if (!oldLogo.includes('firebasestorage')) {
     return null;
   }
+
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
   const logoPath = oldLogo.split('users%2F').pop().split('?alt=media').shift();
-  return firebase.storage().ref(`users/${logoPath}`).delete();
+  const logoRef = storageRef.child(`users/${logoPath}`);
+  return logoRef.delete();
 };
 
 export const deleteUser = (id) => {
@@ -144,11 +152,13 @@ const uploadLogo = (uid, file) => {
 };
 
 const getLogoUrl = (uid, file) => {
+  const storageRef = firebase.storage().ref();
   const fileExtension = file.name.split('.').pop();
-
-  const bucketUrl = `${process.env.REACT_APP_FIRE_BASE_STORAGE_API}`;
-
-  return `${bucketUrl}/o/users%2F${uid}_200x200.${fileExtension}?alt=media`;
+  const fileName = `${uid}.${fileExtension}`;
+  return storageRef.child(`users/${fileName}`).getDownloadURL()
+    .then((url) => {
+      return url; 
+    });
 };
 
 export const createUser = ({
@@ -185,7 +195,7 @@ export const createUser = ({
     let uploadLogoTask = null;
     let logoUrl = null;
     if (file) {
-      logoUrl = getLogoUrl(uid, file);
+      logoUrl = await getLogoUrl(uid, file);
       uploadLogoTask = uploadLogo(uid, file);
     }
     const userData = { name, email, location, logoUrl, createdAt, isAdmin };
@@ -222,53 +232,58 @@ export const createUser = ({
   };
 };
 
+const replaceLogo = async (id, file) => {
+  const storageRef = firebase.storage().ref();
+  const fileExtension = file.name.split('.').pop();
+
+  const files = await storageRef.child('users').listAll();
+
+  // Delete old file
+  const fil = files.items.filter((f) => f.name.startsWith(id) );
+  if (fil && fil[0].length) {
+    await storageRef.child(fil[0].fullPath).delete();
+  }
+
+  // Upload new file
+  const fileName = `${id}.${fileExtension}`;
+  await storageRef.child(`users/${fileName}`).put(file);
+
+  // Get download url
+  const newLogoUrl = await storageRef.child(`users/${fileName}`).getDownloadURL();
+  return newLogoUrl;
+};
+
 export const modifyUser = ({
   name,
-  location,
+  surname1,
+  surname2,
+  phone,
   isAdmin,
   file,
-  createdAt,
   id,
   isEditing,
   isProfile,
 }) => {
   return async (dispatch, getState) => {
     dispatch(USERS_MODIFY_USER_INIT());
-    const { locale } = getState().preferences;
     const user = isProfile
       ? getState().auth.userData
       : getState().users.data.find((thisUser) => thisUser.id === id);
     const { logoUrl } = user;
-    let deleteLogoTask;
-    let uploadLogoTask;
     let newLogoUrl = null;
     if (file) {
-      newLogoUrl = getLogoUrl(id, file);
-      deleteLogoTask = logoUrl && deleteLogo(logoUrl);
-      uploadLogoTask = uploadLogo(id, file);
+      newLogoUrl = await replaceLogo(id, file);
     }
-
     const userData = {
       name,
-      location,
-      createdAt,
+      surname1,
+      surname2,
+      phone,
       isAdmin: isAdmin || user.isAdmin,
-      logoUrl: logoUrl || newLogoUrl,
+      logoUrl: newLogoUrl || logoUrl,
     };
-    const updateUserDbTask = updateDocument('users', id, userData);
 
-    try {
-      await Promise.all([deleteLogoTask, uploadLogoTask, updateUserDbTask]);
-    } catch (error) {
-      const errorMessage = firebaseError(error.code, locale);
-      toastr.error('', errorMessage);
-      return dispatch(
-        USERS_MODIFY_USER_FAIL({
-          error: errorMessage,
-        })
-      );
-    }
-
+    await updateDocument('users', id, userData);
     const { uid } = firebase.auth().currentUser;
 
     if (id === uid) {
@@ -276,9 +291,9 @@ export const modifyUser = ({
     }
 
     if (isProfile) {
-      toastr.success('', 'Profile updated successfully');
+      toastr.success('', 'Perfil actualizado correctamente');
     } else if (isEditing) {
-      toastr.success('', 'User updated successfully');
+      toastr.success('', 'Usuario actualizado correctamente');
     }
 
     return dispatch(USERS_MODIFY_USER_SUCCESS({ user: userData, id }));
