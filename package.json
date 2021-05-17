@@ -7,7 +7,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
     "firebase": "^8.2.6",
-    "firebase-admin": "^9.4.2",
+    "firebase-admin": "^9.8.0",
     "inquirer": "^7.3.3",
     "mutationobserver-shim": "^0.3.7",
     "prop-types": "^15.7.2",
